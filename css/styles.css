@@ -1,0 +1,52 @@
+/* General styling */
+.align-text {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+/* Game container styling */
+.game-container {
+    display: none; /* Hide all game containers by default */
+    text-align: center;
+}
+
+/* Tic Tac Toe grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.grid-item {
+    width: 90px;
+    height: 90px;
+    background-color: rgb(159, 222, 163);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    border: 2px solid #b4aeae;
+}
+
+/* Player colors */
+.playerX {
+    background-color: aquamarine;
+}
+
+.playerO {
+    background-color: lightgray;
+}
+
+.selected {
+    background-color: #4CAF50; /* Highlight color */
+    color: white;
+}
