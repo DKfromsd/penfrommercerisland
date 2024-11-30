@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Selector</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header class="align-text">
@@ -18,6 +18,12 @@
         <!-- Tic Tac Toe Container -->
         <div id="ticTacToe" class="game-container">
             <h2>Tic Tac Toe</h2>
+            <!-- Menu Buttons -->
+            <div class="menu">
+                <button id="pvpButton">Player vs Player</button>
+                <button id="pvsButton">Player vs System</button>
+            </div>
+
             <div class="grid-container">
                 <div class="grid-item" id="box1"></div>
                 <div class="grid-item" id="box2"></div>
@@ -39,12 +45,6 @@
         </div>
 
         <!-- Baseball Guessing Game Container -->
-        <!-- <div id="baseball" class="game-container" style="display: none;">
-            <h2>Baseball Guessing Game</h2>
-            <p>Baseball guessing game area (coming soon)</p>
-        </div> -->
-
-        <!-- Baseball Guessing Game Container -->
         <div id="baseball" class="game-container" style="display: none;">
             <h2>Baseball Guessing Game</h2>
             <p>Try to guess the 3-digit number (unique digits from 1 to 9).</p>
@@ -56,6 +56,6 @@
         </div>
     </main>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

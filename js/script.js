@@ -9,7 +9,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const gridItems = document.querySelectorAll('.grid-item');
     const resetButton = document.getElementById('resetButton');
+    const pvpButton = document.getElementById('pvpButton');
+    const pvsButton = document.getElementById('pvsButton');
+
     let currentPlayer = 'X';
+    let gameMode = 'PvP'; // Default mode
+    let gameOver = false;
+
+    // Winning Combinations
+    const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
 
     // Function to display the selected game container
     function showGame(game) {
@@ -54,25 +71,133 @@ document.addEventListener('DOMContentLoaded', function () {
         selectGameButton('baseballButton');
         showGame('baseball');
     });
+    
+    // Menu Button Event Listeners
+    pvpButton.addEventListener("click", () => {
+        gameMode = "PvP";
+        updateModeVisuals(pvpButton); // Highlight PvP as the selected mode
+        resetGame();
+    });
 
-    // Tic Tac Toe game logic
-    gridItems.forEach(item => {
+    pvsButton.addEventListener("click", () => {
+        gameMode = "PvS";
+        updateModeVisuals(pvsButton); // Highlight PvS as the selected mode
+        resetGame();
+    });
+
+    // Reset Game
+    resetButton.addEventListener("click", resetGame);
+
+    gridItems.forEach((item) => {
         item.addEventListener('click', function () {
-            if (item.textContent !== '') return;
+            if (item.textContent !== '' || gameOver) return;
+
+            // Player move logic
             item.textContent = currentPlayer;
             item.classList.add(currentPlayer === 'X' ? 'playerX' : 'playerO');
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            // Log current game state after a move
+            console.log("Current Player:", currentPlayer);
+            console.log("Game Mode:", gameMode);
+            console.log("Board State:", [...gridItems].map(cell => cell.textContent));
+
+            if (checkWinner(currentPlayer)) {
+                endGame(currentPlayer === 'X' ? 'X Wins!' : 'O Wins!');
+                return;
+            }
+
+            if ([...gridItems].every((cell) => cell.textContent !== '')) {
+                endGame("It's a tie!");
+                return;
+            }
+
+            // Switch logic for PvP or PvS mode
+            if (gameMode === 'PvP') {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            } else if (gameMode === 'PvS' && currentPlayer === 'X') {
+                setTimeout(() => {
+                    systemMove();
+
+                    if (checkWinner('O')) {
+                        endGame('X Loses!');
+                        return;
+                    }
+
+                    if ([...gridItems].every((cell) => cell.textContent !== '')) {
+                        endGame("It's a tie!");
+                    }
+
+                    // Log after the system's move
+                    console.log("Current Player:", currentPlayer);
+                    console.log("Game Mode:", gameMode);
+                    console.log("Board State:", [...gridItems].map(cell => cell.textContent));
+                    
+                }, 300);
+            }
         });
     });
 
-    // Reset Tic Tac Toe game
-    resetButton.addEventListener('click', function () {
-        gridItems.forEach(item => {
-            item.textContent = '';
-            item.classList.remove('playerX', 'playerO');
+    function updateModeVisuals(selectedButton) {
+        // Remove 'selected' class from both buttons
+        pvpButton.classList.remove('selected');
+        pvsButton.classList.remove('selected');
+    
+        // Add 'selected' class to the chosen button
+        selectedButton.classList.add('selected');
+    }
+    
+    function resetGame() {
+        console.log("Resetting the game...");
+        gridItems.forEach((item) => {
+            item.textContent = "";
+            item.classList.remove("playerX", "playerO");
         });
-        currentPlayer = 'X';
-    });
+        currentPlayer = "X";
+        gameOver = false;
+    
+        const resultMessage = document.querySelector(".result");
+        if (resultMessage) resultMessage.remove();
+    
+        console.log("Game reset complete. Current Player:", currentPlayer);
+        console.log("Game Mode:", gameMode);
+        console.log("Board State:", [...gridItems].map(cell => cell.textContent));    
+    }
+
+    // Check for a Winner
+    function checkWinner(player) {
+        return winningCombinations.some((combination) => {
+            return combination.every((index) => {
+                return gridItems[index].textContent === player;
+            });
+        });
+    }
+
+    // Handle Game End
+    function endGame(message) {
+        if (gameOver) return; // Prevent duplicate messages
+        gameOver = true;
+        const resultMessage = document.querySelector(".result");
+        if (resultMessage) resultMessage.remove(); // Remove any previous message
+        const newMessage = document.createElement("p");
+        newMessage.textContent = message;
+        newMessage.classList.add("result");
+        document.getElementById("ticTacToe").appendChild(newMessage);
+
+        // Log final game state when game ends
+        console.log("Game Over:", message);
+        console.log("Final Board State:", [...gridItems].map(cell => cell.textContent));
+    }
+
+    // System Move (PvS Mode)
+    function systemMove() {
+        const emptyCells = Array.from(gridItems).filter(
+            (item) => item.textContent === ''
+        );
+        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        randomCell.textContent = 'O';
+        randomCell.classList.add('playerO');
+        currentPlayer = 'X'; // Switch back to player X
+    }
+
 
     // Show Tic Tac Toe by default on page load
     selectGameButton('ticTacToeButton');
