@@ -95,6 +95,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // Player move logic
             item.textContent = currentPlayer;
             item.classList.add(currentPlayer === 'X' ? 'playerX' : 'playerO');
+            
+            // item.style.backgroundColor = 'darkgreen';
+            
             // Log current game state after a move
             console.log("Current Player:", currentPlayer);
             console.log("Game Mode:", gameMode);
@@ -143,6 +146,15 @@ document.addEventListener('DOMContentLoaded', function () {
     
         // Add 'selected' class to the chosen button
         selectedButton.classList.add('selected');
+
+        // Set the color of the selected button based on game mode
+        if (gameMode === "PvP") {
+            pvpButton.style.backgroundColor = "darkgreen"; // Dark green for PvP
+            pvsButton.style.backgroundColor = "#4CAF50"; // Reset PvS button to original color
+        } else if (gameMode === "PvS") {
+            pvsButton.style.backgroundColor = "darkgreen"; // Dark green for PvS
+            pvpButton.style.backgroundColor = "#4CAF50"; // Reset PvP button to original color
+        }
     }
     
     function resetGame() {
@@ -150,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
         gridItems.forEach((item) => {
             item.textContent = "";
             item.classList.remove("playerX", "playerO");
+            item.style.backgroundColor = ''; // Reset background color
         });
         currentPlayer = "X";
         gameOver = false;
@@ -196,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
         randomCell.textContent = 'O';
         randomCell.classList.add('playerO');
         currentPlayer = 'X'; // Switch back to player X
+        //item.style.backgroundColor = 'darkgreen';
     }
 
 
