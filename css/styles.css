@@ -93,3 +93,55 @@ button.selected:hover {
     margin-top: 20px;
     color: #007bff;
 }
+
+/* Ensure the omok-grid is displayed as a grid */
+.omok-grid {
+    display: grid;
+    grid-template-columns: repeat(15, 20px); /* 15 columns, 40px wide each */
+    grid-template-rows: repeat(15, 20px);    /* 15 rows, 40px tall each */
+    gap: 1px; /* Space between grid items */
+    margin: 10px auto;
+    width: fit-content;
+    background-color: #f9f9f9; /* Light background for contrast */
+}
+
+/* Basic style for each grid item */
+.omok-grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-color: #fff; /* Default grid cell background */
+    border: 1px solid #ccc; /* Lighter border for clean look */
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.omok-grid-item:empty:hover {
+    background-color: #b3b3b3; /* Highlight when hovering over an empty cell */
+}
+
+/* Style for the balls */
+.omok-grid-item .ball {
+    width: 20px;
+    height: 20px;
+    border-radius: 25%;
+    background-color: currentColor;
+}
+
+/* Player marker styles */
+.playerX {
+    color: red;
+}
+
+.playerO {
+    color: blue;
+}
+
+/* Highlight the winner's cells */
+.omok-grid-item.winner {
+    border: 3px solid gold; /* Highlight winning cells */
+    background-color: #ffe4b5; /* Light golden background for winners */
+}
